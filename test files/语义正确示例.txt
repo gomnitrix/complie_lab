@@ -1,0 +1,24 @@
+int m,z=1;  /*连续声明和赋值*/
+m = 2+3*4; 
+char c= 'a';	
+real b = 1.0; 
+int[2][4] h; /*多维数组*/
+int[3] a;  
+a[0] = 2; /*数组赋值*/
+if(m<8)  /*分支语句*/
+then m = m +1;  
+else m = m*2;
+while(m>2)     /*循环语句*/
+do
+m = m+1;
+
+record stack{  /*记录声明*/
+  int num;
+  char value;
+}
+proc int getSum(int x,int y){	/*函数声明*/
+   int j = x;
+   int k = y;
+   return j+k;
+}
+call getSum(1,2);	/*函数调用*/

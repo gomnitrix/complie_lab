@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Grammar</class>
+ <widget class="QWidget" name="Grammar">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1651</width>
+    <height>752</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QTableWidget" name="Forcast_Table">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>30</y>
+     <width>691</width>
+     <height>701</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="FF_Table">
+   <property name="geometry">
+    <rect>
+     <x>740</x>
+     <y>30</y>
+     <width>491</width>
+     <height>701</height>
+    </rect>
+   </property>
+   <column>
+    <property name="text">
+     <string>First</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Follow</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QTableWidget" name="Select_Table">
+   <property name="geometry">
+    <rect>
+     <x>1260</x>
+     <y>30</y>
+     <width>371</width>
+     <height>701</height>
+    </rect>
+   </property>
+   <column>
+    <property name="text">
+     <string>产生式</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Select</string>
+    </property>
+   </column>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

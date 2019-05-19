@@ -1,0 +1,53 @@
+Program->P
+P ->{offset=0} D P
+P->S P
+P->empty
+D -> T id { enter( id.lexeme ，T.type ，offset); offset=offset + T.width; } A;
+D ->proc X id{type='proc'; enterproc(id.lexeme,type，offset); } ( M ) { P }
+D ->record id {type = 'record'; enterrecord(id.lexeme,type，offset);} { P }
+A -> ,id { enter(id.lexeme， T.type，offset);offset=offset+ T .width;} A
+A -> = F {gen( id '=' F.addr ) ;}
+A->empty
+T -> X { t = X.type ; w = X.width ;} C { T.type= C.type; T.width= C.width; }
+X -> int { X.type = int ; X.width = 4; }
+X -> real{ X.type = real ; X.width = 8; }
+X -> char{ X.type = char ; X.width = 1; }
+M ->X id { enter( id.lexeme ，X.type ，offset); offset=offset+ X.width;} M'
+M' ->，X id{enter(id.lexeme，X.type，offset)} M'
+M->empty
+C ->[digit] C { C.type = array(num.val, Cl.type); C.width = num.val * Cl.width}
+C ->empty{ C.type=t; C.width=w; }
+S -> L = E ;{ gen( L.addr '=' E.addr) ;}
+L ->id L'{ L.addr = lookup(id.lexeme); if L.addr == ni1 then error; }
+S-> if B then Ml S else M2 S{backpatch(B.truelist，M1.quad);backpatch(B.falselist,M2.quad); S.nextlist = merge(merge(S1.nextlist,N.nextlist),S2.nextlist);} N->empty{N.nextlist = makelist(nextquad); gen('goto _');}
+S->while M1 B do M2 S{backpatch(Sl.nextlist,Ml.quad);backpatch(B.truelist,M2.quad); S.nextlist = B.falselist; gen('goto' M1.quad);}
+S->switch(E) {t=newtemp(); gen(t '=' E.addr);} { N default:{label(Ln-1);} S {label(next);}}
+N->case digit:{Ln=newlabel(); gen('if't '!=' digit 'goto' Ln);}s{next= newlabel(); gen('goto' next;} N
+S->return E;{gen('return' E.addr);}
+N->empty
+S->call id ( Elist );{n=0; for q中的每个t do {gen('param' t ); n = n+1;} gen('call' id.addr ',' n); }
+Elist->E{将q初始化为只包含E.addr;}
+Elist->, E Elist'{ 将E.addr添加到q的队尾; }
+Elist->empty
+E->G E' {E.addr=newtemp(); gen(E.addr '=' E'.addr '+' G.addr);}
+E'->+ G E'{E.addr = G.addr;}
+E'->empty
+G->F G' {G.addr=newtemp(); gen(G.addr '=' F.addr '*' G'.addr;}
+G'->* F G' {G'.addr = F.addr;}
+G'->empty
+F->( E ){F.addr=E.addr;}
+F->id{E.addr = lookup(id.lexeme);if E.addr ==nil then error;}
+F->digit{F.val=digit.lex;}
+F->char{F.val=char.lex;}
+B->H1 B'
+B'->or M H2 B'{backpatch(H1.fa1se1ist,M.quad);B.truelist = merge(H1.truelist,H2.truelist);B.falselist = H2.falselist;} M->empty{M.quad = nextquad;}
+B'->empty
+H->I1 H'
+H'->and M I2 H'{backpatch(I1.truelist，M.quad);H.truelist = I2.truelist; H.falselist = merge(I1.falselist,I2.falselist);}
+H'->empty
+I->not B{ I.truelist=B.falselist;I.falselist=B.truelist;}
+1->( B ){ I.truelist=B.truelist:I.falselist=B.falselist;}
+1->E relop E{I.truelist=makelist(nextquad);I.falselist=makelist(nextquad+1); gen('if' E1.addr relop E2.addr 'goto _');gen('goto _');}
+I->true{B.truelist=makelist(nextquad);gen('goto _');}
+I->false{B.falselist=makelist(nextquad);gen('goto _');}
+relop-><|<=|==|!=|>|>=

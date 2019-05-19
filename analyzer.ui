@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>857</width>
+    <height>828</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="cf_btn">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>350</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>词法分析</string>
+    </property>
+   </widget>
+   <widget class="Line" name="line">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>290</y>
+      <width>161</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="lexical_rule_btn">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>80</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>词法规则</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="grammar_rules_btn">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>150</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>语法规则</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="yf_btn">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>420</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>语法分析</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="clear_btn">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>600</y>
+      <width>93</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Berlin Sans FB Demi</family>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>clear</string>
+    </property>
+   </widget>
+   <widget class="Line" name="line_2">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>560</y>
+      <width>161</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="yy_btn">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>490</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>语义分析</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>220</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>语义规则</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>857</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menufile">
+    <property name="title">
+     <string>file</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>icons/wenjian.png</normaloff>icons/wenjian.png</iconset>
+    </property>
+    <addaction name="open_btn"/>
+    <addaction name="actionread_dfa"/>
+   </widget>
+   <widget class="QMenu" name="menuclear_DFA">
+    <property name="title">
+     <string>clear DFA</string>
+    </property>
+    <addaction name="actionclear"/>
+   </widget>
+   <addaction name="menufile"/>
+   <addaction name="menuclear_DFA"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="open_btn">
+   <property name="text">
+    <string>open...</string>
+   </property>
+  </action>
+  <action name="actionread_dfa">
+   <property name="text">
+    <string>read dfa</string>
+   </property>
+  </action>
+  <action name="actionclear">
+   <property name="text">
+    <string>clear</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>cf_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>cf_analyze()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>768</x>
+     <y>383</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>756</x>
+     <y>397</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lexical_rule_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>dfa_trans()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>784</x>
+     <y>127</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>751</x>
+     <y>69</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clear_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>clear_editor()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>751</x>
+     <y>646</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>672</x>
+     <y>640</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>grammar_rules_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>grammar()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>729</x>
+     <y>203</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>644</x>
+     <y>200</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>yf_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>grammar_analyze()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>741</x>
+     <y>473</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>630</x>
+     <y>432</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>yy_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>semantic_analyze()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>725</x>
+     <y>532</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>601</x>
+     <y>524</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>semantic()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>746</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>630</x>
+     <y>255</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>cf_analyze()</slot>
+  <slot>dfa_trans()</slot>
+  <slot>clear_editor()</slot>
+  <slot>grammar()</slot>
+  <slot>grammar_analyze()</slot>
+  <slot>semantic_analyze()</slot>
+  <slot>semantic()</slot>
+ </slots>
+</ui>

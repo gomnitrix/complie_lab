@@ -1,0 +1,53 @@
+Program->P?P
+P->D P?D P
+P->S P?S {self.backpatch(self.temp['S']['nextlist'],self.nextquad);} P
+P->empty?empty
+D->T id A ;? T id {self.enter(lines[i],self.temp['id']['lexeme'],self.temp['T']['type'],self.offset);self.offset=self.offset+int(self.temp['T']['width']);} A ;
+D->proc X id ( M ) { P }?proc X {self.codepoint15();} id {type='proc';self.enter(lines[i],self.temp['id']['lexeme'],type,self.offset);} ( M ) { P }
+D->record id { P }?record id {type='record';self.enter(lines[i],self.temp['id']['lexeme'],'record',self.offset);} { P }
+A->, id A? , id {self.enter(lines[i],self.temp['id']['lexeme'],self.temp['T']['type'],self.offset);self.offset=self.offset+self.temp['T']['width'];} A
+A->= F? = F {self.codepoint14(lines[i]);self.gen(self.temp['id']['lexeme']+'='+self.temp['F']['addr']);self.quaternary('=',self.temp['F']['addr'],'_',self.temp['id']['lexeme']);}
+A->empty?empty
+T->X C? X {self.t=self.temp['X']['type'];self.w=self.temp['X']['width'];} C {self.temp['T']['type']=self.temp['C']['type'];self.temp['T']['width']=self.temp['C']['width'];}
+X->int? int {self.temp['X']['type']='int';self.temp['X']['width']=4;}
+X->real? real {self.temp['X']['type']='real';self.temp['X']['width']=8;}
+X->char? char {self.temp['X']['type']='char';self.temp['X']['width']=1;}
+M->X id M'?X id {self.enter(lines[i],self.temp['id']['lexeme'],self.temp['X']['type'],self.offset);self.offset=self.offset+self.temp['X']['width'];} M'
+M'->, X id M'?, X id {self.enter(lines[i],self.temp['id']['lexeme'],self.temp['X']['type'],self.offset);self.offset=self.offset+self.temp['X']['width'];} M'
+M->empty?empty
+C->[ digit ] C?[ {self.codepoint1(self.temp['digit']['lex']);self.codepoint13(lines[i]);} digit {self.codepoint9();} ] C {self.temp['C']['type']=self.array(self.temp['digit']['lex'],self.temp['C']['type']);self.temp['C']['width']=str(int(self.temp['digit']['lex'])*int(self.temp['C']['width']));self.codepoint4();}
+C->empty?empty {self.temp['C']['type']=self.t;self.temp['C']['width']=self.w;self.temp["id"]["flag"]=None;}
+S->L = E ;? L = E ; {self.gen(self.temp['L']['addr']+'='+self.temp['E']['addr']);self.quaternary('=',self.temp['E']['addr'],'_',self.temp['L']['addr']);self.temp['S']['nextlist']=self.makelist(self.nextquad);}
+L->id C?id {self.temp['L']['addr']=self.temp['id']['lexeme'];self.lookup(self.temp['L']['addr'],lines[i]);self.codepoint12(self.temp['L']['addr']);} C {self.codepoint10();}
+S->if I then S N1 else S? if I then {self.temp['M1']['quad']=self.nextquad;} S {self.temp['S1']['nextlist']=self.temp['S']['nextlist'];} N1 else {self.temp['M2']['quad']=self.nextquad;} S {self.backpatch(self.temp['I']['truelist'],self.temp['M1']['quad']);self.backpatch(self.temp['I']['falselist'],self.temp['M2']['quad']);self.temp['S']['nextlist']=self.merge(self.merge(self.temp['S1']['nextlist'],self.temp['N1']['nextlist']),self.temp['S']['nextlist']);}
+S->while I do S?while {self.temp['M1']['quad']=self.nextquad;} I do {self.temp['M2']['quad']=self.nextquad;} S {self.backpatch(self.temp['S']['nextlist'],self.temp['M1']['quad']);self.backpatch(self.temp['I']['truelist'],self.temp['M2']['quad']);self.temp['S']['nextlist']=self.temp['I']['falselist'];self.gen('goto_'+str(self.temp['M1']['quad']));self.quaternary('j','_','_',str(self.temp['M1']['quad']));}
+S->switch ( E )?switch ( E ) {t=self.newtemp();self.gen(t+'='+self.temp['E']['addr']);self.quaternary('=',self.temp['E']['addr'],'_',t);} {N default:{label(Ln-1);} S {label(next);}}
+N->case digit: N?case digit:{Ln=newlabel();self.gen('if'+t+'!='+digit+'goto'+Ln);} S {next=newlabel();self.gen('goto'+next;} N
+S->return E ;?return E ; {self.gen('return_'+self.temp['E']['addr']);self.quaternary('r',self.temp['E']['addr'],'_','_');self.codepoint15(lines[i]);}
+N->empty?empty
+N1->empty?empty {self.temp['N1']['nextlist']=self.makelist(self.nextquad);self.gen('goto'+'_{}');self.quaternary('j','_','_','{}');}
+S->call id ( Elist ) ;?call id {self.lookup(self.temp['id']['lexeme'],lines[i]);self.codepoint11(lines[i]);} ( Elist ) ; {self.codepoint7();self.gen('call_'+self.temp['id']['lexeme']+','+str(len(self.queen)));self.quaternary('call','_','_',self.temp['id']['lexeme']);}
+Elist->E Elist?E {self.codepoint5();} Elist
+Elist->, E Elist?, E Elist {self.codepoint6();}
+Elist->empty?empty
+E->G E'?G E' {self.temp['E']['addr']=self.newtemp();self.gen(self.temp['E']['addr']+'='+self.temp['G']['addr']+'+'+self.temp['E\'']['addr']);self.quaternary('+',self.temp['G']['addr'],self.temp['E\'']['addr'],self.temp['E']['addr']);}
+E'->+ G E'?+ {self.codepoint1(self.temp['G']['addr']);} G E' {self.temp['E\'']['addr']=self.temp['G']['addr'];self.codepoint2();}
+E'->empty?empty {self.temp['E\'']['addr']='empty'}
+G->F G'?F G' {self.temp['G']['addr']=self.newtemp();self.gen(self.temp['G']['addr']+'='+self.temp['F']['addr']+'*'+self.temp['G\'']['addr']);self.quaternary('*',self.temp['F']['addr'],self.temp['G\'']['addr'],self.temp['G']['addr']);}
+G'->* F G'?* {self.codepoint1(self.temp['F']['addr']);} F G' {self.temp['G\'']['addr']=self.temp['F']['addr'];self.codepoint3();}
+G'->empty?empty {self.temp['G\'']['addr']='empty'}
+F->( E )?( E ) {self.temp['F']['addr']=self.temp['E']['addr'];}
+F->id?{self.codepoint1(self.temp['id']['lexeme']);} id {self.temp['F']['addr']=self.temp['id']['lexeme'];self.codepoint8();self.lookup(self.temp['F']['addr'],lines[i]);}
+F->digit?digit {self.temp['F']['addr']=self.temp['digit']['lex'];}
+F->char?char {self.temp['F']['addr']=self.temp['char']['lex'];}
+I->not I?not I {self.temp['I']['truelist']=self.temp['I']['falselist'];self.temp['I']['falselist']=self.temp['I']['truelist'];}
+I->( I )?( I )
+I->E Relop E?E {self.temp['E1']['addr']=self.temp['E']['addr'];} Relop E {self.temp['I']['truelist']=self.makelist(self.nextquad);self.temp['I']['falselist']=self.makelist(self.nextquad+1);self.gen('if_'+self.temp['E1']['addr']+self.temp['Relop']['val']+self.temp['E']['addr']+'_goto'+'_{}');self.quaternary('j'+self.temp['Relop']['val'],self.temp['E1']['addr'],self.temp['E']['addr'],'{}');self.gen('goto'+'_{}');self.quaternary('j','_','_','{}');}
+I->true?true {self.temp['I']['truelist']=self.makelist(self.nextquad);self.gen('goto'+'_{}');self.gen('goto'+'_{}');self.quaternary('j','_','_','{}');}
+I->false?false {self.temp['I']['falselist']=self.makelist(self.nextquad);self.gen('goto'+'_{}');self.gen('goto'+'_{}');self.quaternary('j','_','_','{}');}
+Relop-><?<
+Relop-><=?<=
+Relop->==?==
+Relop->!=?!=
+Relop->>?>
+Relop->>=?>=

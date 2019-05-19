@@ -1,0 +1,8 @@
+int a *;	 /*多了个乘号*/
+int b;
+int c = 2;
+int [2 d;       /*少了右方括号*/
+record stack     /*少了左大括号*/
+ int e;
+ char g;}
+real f = 2.1	 /*少了个分号*/

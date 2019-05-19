@@ -1,0 +1,48 @@
+Program->P
+P->D P
+P->S P
+P->empty
+D->T id A ;
+D->proc X id ( M ) { P }
+D->record id { P }
+A->, id A
+A->= F
+A->empty
+T->X C
+X->int
+X->real
+X->char
+M->X id M'
+M'->, X id M'
+M->empty
+C->[ digit ] C
+C->empty
+S->L = E ;
+L->id C
+S->if I then S N1 else S
+S->while I do S
+S->switch ( E )
+N->case digit: N
+S->return E ;
+N->empty
+N1->empty
+S->call id ( Elist ) ;
+Elist->E Elist
+Elist->, E Elist
+Elist->empty
+E->G E'
+E'->+ G E'
+E'->empty
+G->F G'
+G'->* F G'
+G'->empty
+F->( E )
+F->id
+F->digit
+F->char
+I->not I
+I->( I )
+I->E Relop E
+I->true
+I->false
+Relop-><|<=|==|!=|>|>=
